@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        nav img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .carousel-item {
+            width: 100%;
+            height: 400px;
+        }
+
+        body::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: #188333;
+            border-radius: 5px;
+            border: 1px solid #c8ff00;
+        }
+
+        .navbar-nav {
+            position: relative;
+            left: 22%;
+        }
+
+        footer {
+            font-size: 13px;
+            color: black;
+        }
+
+        hr {
+            margin: 0;
+            color: rgb(88, 88, 88);
+        }
+
+        h2, p {
+            text-align: center;
+        }
+
+        .product-list, .cart {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .product-item {
+            margin: 5px 0;
+        }
+
+        .cart-item {
+            margin: 5px 0;
+        }
+
+        .cart-total {
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: rgb(200, 245, 203);">
+        <div class="container-fluid justify-content-start">
+            <a class="navbar-brand" href="home.html">
+                <img src="gbpng.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+            </a>
+            <a class="navbar-brand lead me-5" style="font-size: 25px;" href="home.html">Green Basket</a>
+        </div>
+        <div>
+            <a class="navbar-brand lead me-5" style="font-size: 25px; font-weight: bold;" href="#">Your Cart</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Product List</h2>
+        <div class="product-list">
+            <div class="product-item" data-id="1" data-name="Product 1" data-price="10">
+                Product 1 - $10 <button onclick="addToCart(this)">Add to Cart</button>
+            </div>
+            <div class="product-item" data-id="2" data-name="Product 2" data-price="20">
+                Product 2 - $20 <button onclick="addToCart(this)">Add to Cart</button>
+            </div>
+            <div class="product-item" data-id="3" data-name="Product 3" data-price="30">
+                Product 3 - $30 <button onclick="addToCart(this)">Add to Cart</button>
+            </div>
+        </div>
+
+        <h2>Your Cart</h2>
+        <div class="cart" id="cart">
+            <p>Your cart is empty!</p>
+        </div>
+    </div>
+
+    <script>
+        let cartItems = [];
+
+        function addToCart(button) {
+            const productItem = button.parentElement;
+            const productId = productItem.getAttribute('data-id');
+            const productName = productItem.getAttribute('data-name');
+            const productPrice = productItem.getAttribute('data-price');
+
+            const cartItem = {
+                id: productId,
+                name: productName,
+                price: productPrice
+            };
+
+            cartItems.push(cartItem);
+            displayCart();
+        }
+
+        function removeFromCart(index) {
+            cartItems.splice(index, 1);
+            displayCart();
+        }
+
+        function displayCart() {
+            const cart = document.getElementById('cart');
+            cart.innerHTML = '';
+
+            if (cartItems.length === 0) {
+                cart.innerHTML = '<p>Your cart is empty!</p>';
+                return;
+            }
+
+            let totalPrice = 0;
+
+            cartItems.forEach((item, index) => {
+                const cartItemDiv = document.createElement('div');
+                cartItemDiv.className = 'cart-item';
+                cartItemDiv.innerHTML = `${item.name} - $${item.price} <button onclick="removeFromCart(${index})">Remove</button>`;
+                cart.appendChild(cartItemDiv);
+
+                totalPrice += parseFloat(item.price);
+            });
+
+            const totalDiv = document.createElement('div');
+            totalDiv.className = 'cart-total';
+            totalDiv.innerText = `Total: $${totalPrice.toFixed(2)}`;
+            cart.appendChild(totalDiv);
+        }
+    </script>
+</body>
+</html>
